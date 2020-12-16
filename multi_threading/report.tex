@@ -1,0 +1,80 @@
+\documentclass[openany,a4paper,12pt]{article}
+
+\usepackage{amssymb,tikz}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xepersian}
+
+\settextfont[Scale=1]{XB Zar}
+
+\lstset{basicstyle=\ttfamily\small,
+  showstringspaces=false,
+  commentstyle=\color{red},
+  keywordstyle=\color{blue}
+}
+
+\renewcommand{\baselinestretch}{1.4}
+\textwidth=15.5cm
+\textheight=25cm
+\voffset=-3cm
+\oddsidemargin=.5cm
+\evensidemargin=.5cm
+\setlength{\unitlength}{10mm}
+\renewcommand{\baselinestretch}{1.5} 
+
+\newcommand{\rom}[1]{{\romannumeral #1}}
+
+\pagestyle{empty}
+
+\begin{document}
+\begin{center}
+
+\textbf{گزارش کار طراحی چندریسه‌ای}
+
+استاد درس: دکتر مهدی کارگهی
+
+پاییز ۹۹
+\end{center}
+
+در این پروژه به حل یک مسئلهٔ سادهٔ یادگیری ماشین می‌پردازیم. در ابتدا این کار را به صورت سری انجام می‌دهیم و در فاز دوم، سعی می‌کنم به کمک کتابخانهٔ pthread از قابلیت پردازش موازی سیستم استفاده کنیم و زمان صرف‌شده برای اجرای برنامه را کاهش دهیم.
+برای موازی‌سازی، فایل trains.csv را به ۴ فایل با اندازه یکسان تقسیم کرده و هر یک را توسط یک پردازه مستقل می‌خوانیم و در یک بردار ذخیر می‌کنیم. در اینتها این بردارها ره به هم متصل کرده و باقی مراحل را مانند روش سری انجام می‌دهیم.
+اسکریپت زیر برای اجرای برنامه‌های سری و موازی روی داده یکسان و مقایسه زمان اجرای هر یک نوشته شده.
+
+\LTR
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+echo "Making serial"
+(cd serial && make)
+echo "Making parallel"
+(cd parallel && make)
+echo
+echo "Running serial"
+time (./serial/PhonePricePrediction.out dataset/)
+echo
+echo "Running parallel"
+time (./parallel/PhonePricePrediction.out dataset/)
+\end{lstlisting}
+\RTL
+
+بعد از اجرای این اسکریپت خروجی زیر دریافت شده که نشان می‌دهد زمان اجرای برنامه به مراتب سریع‌تر شده.
+
+\LTR
+\begin{lstlisting}[language=bash]
+Running serial
+Accuracy: 84.65%
+real    0m0.022s
+user    0m0.015s
+sys     0m0.007s
+
+Running parallel
+Accuracy: 83.4%
+real    0m0.012s
+user    0m0.016s
+sys     0m0.003s
+\end{lstlisting}
+\RTL
+\end{document}
